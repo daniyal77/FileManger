@@ -27,7 +27,7 @@ class FileMangerFolderController extends Controller
 
     public function show($slug)
     {
-        $parent = FileManagerFolder::where('slug', $slug)->with('media', 'children')->first();
+        $parent = FileManagerFolder::where('slug', $slug)->with('media', 'children','parent')->first();
         $parent_id = $parent->id;
         $directories = $parent->children;
         $media = $parent->media;

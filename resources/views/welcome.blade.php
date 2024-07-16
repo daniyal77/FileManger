@@ -70,20 +70,20 @@
         <div class="container">
             <nav aria-label="breadcrumb" style="text-align: right; direction: rtl;">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">خانه</a></li>
+                    <li class="breadcrumb-item"><a href="/">خانه</a></li>
                     @if(isset($parent))
                         <li class="breadcrumb-item active" aria-current="page">{{$parent->name}}</li>
                     @endif
                 </ol>
             </nav>
             <div class="col-md-12">
-                @foreach($media as $record)
+                @foreach($directories as $directory)
                     <div class="col-md-2 text-center">
-                        <a href="{{route('show.folder',$record->slug)}}" class="folder-area">
+                        <a href="{{route('show.folder',$directory->slug)}}" class="folder-area">
                             <div>
                                 <i class="fa fa-folder"></i>
                             </div>
-                            <span>{{$record->name}}</span>
+                            <span>{{$directory->name}}</span>
                         </a>
                     </div>
                 @endforeach
@@ -103,6 +103,8 @@
                 </div>
                 <form action="{{ route('create.folder') }}" method="post">
                     @csrf
+
+                    <input type="hidden" name="parent_id" value="{{$parent_id}}">
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="name">نام فولدر</label>

@@ -10,30 +10,30 @@ class FileMangerFolderController extends Controller
 {
     public function index()
     {
-        $media = FileManagerFolder::where('parent_id', 0)->get();
-        return view('welcome', compact('media'));
+        $directories = FileManagerFolder::where('parent_id', 0)->get();
+        $parent_id = 0;
+        $media = null;
+        return view('welcome', compact('directories', 'parent_id', 'media'));
     }
 
     public function store(SaveFolder $request)
     {
         //todo for create folder
-        //add event for save
         //replace space by - in slug
         //replace farsi slug to finglish
-
-        FileManagerFolder::create([
-            'name' => $request->name,
-            'slug' => $request->slug,
-        ]);
+        FileManagerFolder::createFolder(name: $request->name, slug: $request->slug, parentId: $request->parent_id);
         return redirect()->back();
     }
 
     public function show($slug)
     {
-        $parent = FileManagerFolder::where('slug', $slug)->with('media')->first();
-        $media=$parent->media;
-        return view('welcome', compact('media','parent'));
+        $parent = FileManagerFolder::where('slug', $slug)->with('media', 'children')->first();
+        $parent_id = $parent->id;
+        $directories = $parent->children;
+        $media = $parent->media;
+        return view('welcome', compact('media', 'parent', 'parent_id', 'directories'));
     }
+
 
     public function showFile()
     {

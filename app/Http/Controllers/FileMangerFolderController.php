@@ -2,22 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FileManagerFolder;
 use Illuminate\Support\Facades\File;
 
-class FileMangerController extends Controller
+class FileMangerFolderController extends Controller
 {
     public function index()
     {
 
-        $directories = $this->showFolder();
+        $directories = FileManagerFolder::where('parent_id', 0)->get();
         return view('welcome', compact('directories'));
 
     }
 
-    public function showFolder()
+    public function showFile()
     {
-
-
         $path = public_path('fi');
         $files = File::allFiles($path);
         foreach ($files as $file) {

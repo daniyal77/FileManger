@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\FileMangerController;
+use App\Http\Controllers\FileMangerFolderController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +14,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [FileMangerController::class, 'index']);
-Route::get('/show-folder', [FileMangerController::class, 'showFolder'])->name('show.folder');
+Route::get('/', [FileMangerFolderController::class, 'index']);
+Route::get('/show-folder', [FileMangerFolderController::class, 'showFolder'])->name('show.folder');

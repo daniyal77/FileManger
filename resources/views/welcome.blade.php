@@ -10,6 +10,35 @@
 
     <script type="text/javascript" src="{{asset('assets/js/jquery-1.10.2.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('assets/bootstrap/js/bootstrap.min.js')}}"></script>
+    <style>
+        .folder-area {
+            color: unset !important;
+            cursor: pointer;
+        }
+
+        .folder-area:hover {
+            text-decoration: unset !important;
+        }
+
+        .folder-area div {
+            height: 150px;
+            background: #eee;
+        }
+
+        .folder-area div i {
+            font-size: 100px;
+            display: flex;
+            height: -webkit-fill-available;
+            flex-direction: row;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+
+        .folder-area span {
+            display: block;
+            background: #ccc;
+        }
+    </style>
 </head>
 <body>
 
@@ -23,9 +52,14 @@
         <div class="container">
             <div class="col-md-12">
                 @foreach($directories as $directory)
-                    <p style="cursor:pointer;">
-                        <a class="d-block">{{$directory['text']}}</a>
-                    </p>
+                    <div class="col-md-2 text-center">
+                        <a href="{{$directory->slug}}" class="folder-area">
+                            <div>
+                                <i class="fa fa-folder"></i>
+                            </div>
+                            <span>{{$directory->name}}</span>
+                        </a>
+                    </div>
                 @endforeach
             </div>
         </div>

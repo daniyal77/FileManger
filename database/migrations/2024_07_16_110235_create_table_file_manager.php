@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('file_manager_folder', function (Blueprint $table) {
+        Schema::create('file_manager_folders', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('slug');

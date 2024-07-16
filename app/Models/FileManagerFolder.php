@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class FileManagerFolder extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['name', 'slug'];
 }

@@ -38,6 +38,19 @@
             display: block;
             background: #ccc;
         }
+
+        .nav-bar-action {
+            text-align: right;
+            margin-bottom: 10px;
+        }
+
+        .nav-bar-action a {
+            background: #333;
+            color: white;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 5px;
+        }
     </style>
 </head>
 <body>
@@ -47,7 +60,12 @@
     <div class="page-header">
         <h1>File Manager <small>A responsive file manager template</small></h1>
     </div>
-
+    <div class="nav-bar-action">
+        <a href="">بارگذاری</a>
+        <span class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">ساخت پوشه</span>
+        <a href="">فیلتر</a>
+        <a href="">سطل زباله</a>
+    </div>
     <div class="row">
         <div class="container">
             <div class="col-md-12">
@@ -65,8 +83,36 @@
         </div>
     </div>
 
-
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">ایجاد پوشه</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{{ route('create.folder') }}" method="post">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="name">نام فولدر</label>
+                            <input type="text" id="name" name="name" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="slug">نامک</label>
+                            <input type="text" id="slug" name="slug" class="form-control">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+                        <button class="btn btn-primary">ثبت</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
-
 </body>
 </html>

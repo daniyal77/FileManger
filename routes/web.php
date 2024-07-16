@@ -15,5 +15,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [FileMangerFolderController::class, 'index']);
-Route::get('/folder/{slug}', [FileMangerFolderController::class, 'show']);
+Route::get('/folder/{slug}', [FileMangerFolderController::class, 'show'])->name('show.folder');
 Route::post('/create', [FileMangerFolderController::class, 'store'])->name('create.folder');

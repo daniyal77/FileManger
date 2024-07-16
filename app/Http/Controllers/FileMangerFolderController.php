@@ -10,10 +10,8 @@ class FileMangerFolderController extends Controller
 {
     public function index()
     {
-
-        $directories = FileManagerFolder::where('parent_id', 0)->get();
-        return view('welcome', compact('directories'));
-
+        $media = FileManagerFolder::where('parent_id', 0)->get();
+        return view('welcome', compact('media'));
     }
 
     public function store(SaveFolder $request)
@@ -28,6 +26,13 @@ class FileMangerFolderController extends Controller
             'slug' => $request->slug,
         ]);
         return redirect()->back();
+    }
+
+    public function show($slug)
+    {
+        $parent = FileManagerFolder::where('slug', $slug)->with('media')->first();
+        $media=$parent->media;
+        return view('welcome', compact('media','parent'));
     }
 
     public function showFile()

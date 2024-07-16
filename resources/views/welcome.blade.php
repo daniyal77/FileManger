@@ -68,14 +68,22 @@
     </div>
     <div class="row">
         <div class="container">
+            <nav aria-label="breadcrumb" style="text-align: right; direction: rtl;">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">خانه</a></li>
+                    @if(isset($parent))
+                        <li class="breadcrumb-item active" aria-current="page">{{$parent->name}}</li>
+                    @endif
+                </ol>
+            </nav>
             <div class="col-md-12">
-                @foreach($directories as $directory)
+                @foreach($media as $record)
                     <div class="col-md-2 text-center">
-                        <a href="{{$directory->slug}}" class="folder-area">
+                        <a href="{{route('show.folder',$record->slug)}}" class="folder-area">
                             <div>
                                 <i class="fa fa-folder"></i>
                             </div>
-                            <span>{{$directory->name}}</span>
+                            <span>{{$record->name}}</span>
                         </a>
                     </div>
                 @endforeach

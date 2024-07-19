@@ -14,6 +14,7 @@
         .folder-area {
             color: unset !important;
             cursor: pointer;
+            border-radius: 5px;
         }
 
         a:focus, a:hover {
@@ -27,6 +28,8 @@
         .folder-area div {
             height: 150px;
             background: #eee;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
         }
 
         .folder-area div i {
@@ -41,6 +44,8 @@
         .folder-area span {
             display: block;
             background: #ccc;
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
         }
 
         .nav-bar-action {
@@ -55,7 +60,6 @@
             padding: 10px;
             margin: 5px;
         }
-
 
         #contextMenu {
             display: none;
@@ -88,6 +92,18 @@
             text-decoration: unset !important;
         }
 
+        .custom-border {
+            border: 2px solid #337ab7;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+
+        .active-folders {
+            border: 2px solid #337ab7;
+            border-top: 0;
+            background-color: #337ab7 !important;
+            color: white;
+        }
 
     </style>
 </head>
@@ -215,9 +231,19 @@
     const folders = document.querySelectorAll('.folder-area');
     const contextMenu = document.getElementById('contextMenu');
 
+
     folders.forEach(folder => {
         folder.addEventListener('contextmenu', function (event) {
             event.preventDefault();
+
+            // Remove custom-border from all folders first
+            folders.forEach(f => f.querySelector('div').classList.remove('custom-border'));
+            folders.forEach(f => f.querySelector('span').classList.remove('active-folders'));
+
+            // Add custom-border to the current folder
+            folder.querySelector('div').classList.add('custom-border');
+            folder.querySelector('span').classList.add('active-folders');
+
             const folderName = folder.getAttribute('data-name');
             console.log('کلیک راست بر روی:', folderName);
             contextMenu.style.display = 'block';
@@ -228,6 +254,9 @@
 
     document.addEventListener('click', function () {
         contextMenu.style.display = 'none';
+        folders.forEach(folder => folder.querySelector('div').classList.remove('custom-border'));
+        folders.forEach(folder => folder.querySelector('span').classList.remove('active-folders'));
+
     });
 </script>
 </body>

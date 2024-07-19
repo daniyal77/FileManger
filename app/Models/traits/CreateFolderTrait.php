@@ -13,4 +13,11 @@ trait CreateFolderTrait
             'parent_id' => $parentId
         ]);
     }
+    static function updateFolder($name, $slug, $id)
+    {
+        self::findOrFail($id)->update([
+            'name'      => $name,
+            'slug'      => $slug,
+        ]);
+    }
 }

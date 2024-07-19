@@ -55,7 +55,7 @@
 
         .nav-bar-action a {
             background: #333;
-            color: white;
+            color: white !important;
             border-radius: 5px;
             padding: 10px;
             margin: 5px;
@@ -151,7 +151,8 @@
                 @foreach($directories as $directory)
                     <div class="col-md-2 text-center">
                         <a href="{{route('show.folder',$directory->slug)}}" class="folder-area"
-                           data-name="{{ $directory->name }}">
+                           data-id="{{ $directory->id }}"
+                           data-name="{{ $directory->name }}" data-slug="{{ $directory->name }}">
                             <div>
                                 <i class="fa fa-folder"></i>
                             </div>
@@ -182,42 +183,10 @@
         </div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">ایجاد پوشه</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form action="{{ route('create.folder') }}" method="post">
-                    @csrf
-
-                    <input type="hidden" name="parent_id" value="{{$parent_id}}">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="name">نام فولدر</label>
-                            <input type="text" id="name" name="name" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="slug">نامک</label>
-                            <input type="text" id="slug" name="slug" class="form-control">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
-                        <button class="btn btn-primary">ثبت</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
+    @include('modal')
     <div id="contextMenu">
         <ul>
-            <li><a href="">تغییر نام</a></li>
+            <li id="openModalRenameFolder"><span>تغییر نام</span></li>
             <li><a href="">حذف</a></li>
             <li><a href="">دانلود</a></li>
             <li><a href="">پیش نمایش</a></li>
@@ -230,7 +199,6 @@
 <script>
     const folders = document.querySelectorAll('.folder-area');
     const contextMenu = document.getElementById('contextMenu');
-
 
     folders.forEach(folder => {
         folder.addEventListener('contextmenu', function (event) {
@@ -245,7 +213,11 @@
             folder.querySelector('span').classList.add('active-folders');
 
             const folderName = folder.getAttribute('data-name');
-            console.log('کلیک راست بر روی:', folderName);
+            const folderSlug = folder.getAttribute('data-slug');
+            const folderId = folder.getAttribute('data-id');
+
+            $('#openModalRenameFolder').attr("onClick", `openModalRenameFolder('${folderName}','${folderSlug}','${folderId}')`);
+
             contextMenu.style.display = 'block';
             contextMenu.style.top = `${event.pageY}px`;
             contextMenu.style.left = `${event.pageX}px`;
@@ -258,6 +230,15 @@
         folders.forEach(folder => folder.querySelector('span').classList.remove('active-folders'));
 
     });
+
+    function openModalRenameFolder(folderName, folderSlug, folderId) {
+        $('#renameFolder').addClass('in')
+        $('#renameFolder').css('display', 'block')
+
+        $('#rename_folder_slug').val(folderSlug)
+        $('#rename_folder_name').val(folderName)
+        $('#rename_folder_id').val(folderId)
+    }
 </script>
 </body>
 </html>

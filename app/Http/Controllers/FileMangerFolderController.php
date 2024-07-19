@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SaveFolder;
 use App\Models\FileManagerFolder;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\File;
 
 class FileMangerFolderController extends Controller
@@ -27,14 +28,19 @@ class FileMangerFolderController extends Controller
 
     public function show($slug)
     {
-        $parent = FileManagerFolder::where('slug', $slug)->with('media', 'children','parent')->first();
+        $parent = FileManagerFolder::where('slug', $slug)->with('media', 'children', 'parent')->first();
         $breadcrumbs = $parent->getBreadcrumb();
         $parent_id = $parent->id;
         $directories = $parent->children;
         $media = $parent->media;
-        return view('welcome', compact('media', 'parent', 'parent_id', 'directories','breadcrumbs'));
+        return view('welcome', compact('media', 'parent', 'parent_id', 'directories', 'breadcrumbs'));
     }
 
+    public function rename(SaveFolder $request): RedirectResponse
+    {
+        FileManagerFolder::updateFolder(name: $request->name, slug: $request->slug, id: $request->id);
+        return redirect()->back();
+    }
 
     public function showFile()
     {

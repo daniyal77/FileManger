@@ -6,6 +6,7 @@ use App\Models\traits\CreateFolderTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
 
 class FileManagerFolder extends Model
 {
@@ -25,5 +26,17 @@ class FileManagerFolder extends Model
     public function children(): HasMany
     {
         return $this->hasMany(FileManagerFolder::class, 'parent_id');
+    }
+    public function getBreadcrumb(): Collection
+    {
+        $breadcrumb = collect();
+        $folder = $this;
+
+        while ($folder) {
+            $breadcrumb->prepend($folder);
+            $folder = $folder->parent;
+        }
+
+        return $breadcrumb;
     }
 }

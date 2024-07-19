@@ -55,7 +55,7 @@
 </head>
 <body>
 
-<div class="container">
+<div class="container" style="direction: rtl;">
 
     <div class="page-header">
         <h1>File Manager <small>A responsive file manager template</small></h1>
@@ -68,15 +68,30 @@
     </div>
     <div class="row">
         <div class="container">
-            <nav aria-label="breadcrumb" style="text-align: right; direction: rtl;">
+            <nav aria-label="breadcrumb " >
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/">خانه</a></li>
                     @if(isset($parent))
-                        <li class="breadcrumb-item active" aria-current="page">{{$parent->name}}</li>
+                        @foreach($breadcrumbs  as $breadcrumb)
+                            @if($loop->last)
+                                <li class="breadcrumb-item active" aria-current="page">{{$breadcrumb->name}}</li>
+                            @else
+                                <li class="breadcrumb-item"><a href="{{route('show.folder',$breadcrumb->slug)}}">{{$breadcrumb->name}}</a></li>
+                            @endif
+                        @endforeach
                     @endif
                 </ol>
             </nav>
             <div class="col-md-12">
+                <div class="col-md-2 text-center">
+                    <a href="h" class="folder-area">
+                        <div>
+                            <i class="fa fa-level-up"></i>
+                        </div>
+                        <span>بازگشت</span>
+                    </a>
+                </div>
+
                 @foreach($directories as $directory)
                     <div class="col-md-2 text-center">
                         <a href="{{route('show.folder',$directory->slug)}}" class="folder-area">

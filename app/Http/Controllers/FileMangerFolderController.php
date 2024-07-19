@@ -10,8 +10,8 @@ class FileMangerFolderController extends Controller
 {
     public function index()
     {
-        $directories = FileManagerFolder::where('parent_id', 0)->get();
-        $parent_id = 0;
+        $directories = FileManagerFolder::where('parent_id', null)->get();
+        $parent_id = null;
         $media = null;
         return view('welcome', compact('directories', 'parent_id', 'media'));
     }
@@ -28,10 +28,11 @@ class FileMangerFolderController extends Controller
     public function show($slug)
     {
         $parent = FileManagerFolder::where('slug', $slug)->with('media', 'children','parent')->first();
+        $breadcrumbs = $parent->getBreadcrumb();
         $parent_id = $parent->id;
         $directories = $parent->children;
         $media = $parent->media;
-        return view('welcome', compact('media', 'parent', 'parent_id', 'directories'));
+        return view('welcome', compact('media', 'parent', 'parent_id', 'directories','breadcrumbs'));
     }
 
 

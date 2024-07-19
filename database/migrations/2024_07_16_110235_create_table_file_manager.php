@@ -15,12 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug');
-            $table->bigInteger('parent_id')->unsigned()->default(0);
+            $table->bigInteger('parent_id')->unsigned()->nullable();
+            $table->foreign('parent_id')->references('id')->on('file_manager_folders')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();
-
         });
-
         Schema::create('file_manager_media', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('folder_id');
@@ -32,10 +31,6 @@ return new class extends Migration
             $table->softDeletes();
             $table->timestamps();
         });
-
-        Schema::table('file_manager_folders', function (Blueprint $table) {
-            $table->foreign('parent_id')->references('id')->on('file_manager_folders')->onDelete('cascade');
-        });
     }
 
     /**
@@ -43,9 +38,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('file_manager_folders', function (Blueprint $table) {
-            $table->dropForeign(['parent_id']);
-        });
         Schema::dropIfExists('file_manager_folders');
         Schema::dropIfExists('file_manager_media');
     }

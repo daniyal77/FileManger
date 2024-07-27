@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\FileMangerFolderController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,11 +14,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
+/**
+ * ایجاد پوشه
+ */
 Route::prefix('/v1/folder')->group(function () {
     Route::get('/list', [FileMangerFolderController::class, 'index']);
-    Route::post('/create', [FileMangerFolderController::class, 'store']);
     Route::get('/show/{slug}', [FileMangerFolderController::class, 'show']);
+    Route::post('/create', [FileMangerFolderController::class, 'store']);
     Route::put('/rename', [FileMangerFolderController::class, 'rename']);
     Route::delete('/delete', [FileMangerFolderController::class, 'delete']);
 });

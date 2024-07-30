@@ -11,6 +11,15 @@ use Illuminate\Support\Facades\File;
 
 class FileMangerFolderController extends ApiController
 {
+    /**
+     * @SWG\Get(
+     *     path="/users",
+     *     summary="Get a list of users",
+     *     tags={"Users"},
+     *     @SWG\Response(response=200, description="Successful operation"),
+     *     @SWG\Response(response=400, description="Invalid request")
+     * )
+     */
     public function index(): JsonResponse
     {
         $directories = FileManagerFolder::where('parent_id', null)->get();

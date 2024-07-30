@@ -149,7 +149,7 @@
                     </div>
                 @endif
                 @foreach($directories as $directory)
-                    <div class="col-md-2 text-center">
+                    <div class="col-md-2 text-center " >
                         <a href="{{route('show.folder',$directory->slug)}}" class="folder-area"
                            data-id="{{ $directory->id }}"
                            data-name="{{ $directory->name }}" data-slug="{{ $directory->name }}">
@@ -197,6 +197,12 @@
 </div>
 
 <script>
+    $('.folder-area').on("click", function(event) {
+        $(this).addClass('border');
+
+        event.preventDefault();
+        $( ".folder-area").unbind( "click" );
+    });
     const folders = document.querySelectorAll('.folder-area');
     const contextMenu = document.getElementById('contextMenu');
 

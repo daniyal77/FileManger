@@ -6,6 +6,15 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class SaveFolder extends FormRequest
 {
+    public function prepareForValidation()
+    {
+        if ($this->input('parent_id') == 0) {
+            $this->merge([
+                'parent_id' => null,
+            ]);
+        }
+    }
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -23,7 +32,7 @@ class SaveFolder extends FormRequest
     {
         return [
             'name' => 'required',
-            'slug' => 'required',
+            'slug' => 'required|regex:/^[a-zA-Z]+$/',
         ];
     }
 }

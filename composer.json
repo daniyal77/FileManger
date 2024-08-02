@@ -14,6 +14,7 @@
         "laravel/tinker": "^2.8",
         "nwidart/laravel-modules": "^10.0",
         "pbmedia/laravel-ffmpeg": "^8.5",
+        "rap2hpoutre/laravel-log-viewer": "^2.4",
         "zircote/swagger-php": "^4.10"
     },
     "require-dev": {

@@ -1,0 +1,40 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "FileManager API Document",
+        "description": "FileManager API Document",
+        "contact": {
+            "email": "daniyalx77@gmail.com"
+        },
+        "license": {
+            "name": "Your License",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/users": {
+            "get": {
+                "tags": [
+                    "folders"
+                ],
+                "summary": "دریافت لیست کاربران",
+                "operationId": "d86fa28610e279c55f895f3e51d2e378",
+                "responses": {
+                    "200": {
+                        "description": "عملیات موفقیت‌آمیز"
+                    },
+                    "400": {
+                        "description": "درخواست نامعتبر"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "folders",
+            "description": "folders"
+        }
+    ]
+}

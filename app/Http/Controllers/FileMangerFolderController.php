@@ -7,17 +7,31 @@ use App\Http\Resources\ListFolders;
 use App\Models\FileManagerFolder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
+use OpenApi\Annotations as OA;
 
+/**
+ * @OA\Info(
+ *     version="1.0.0",
+ *     title="FileManager API Document",
+ *     description="FileManager API Document",
+ *     @OA\Contact(
+ *         email="daniyalx77@gmail.com"
+ *     ),
+ *     @OA\License(
+ *         name="Your License",
+ *         url="http://www.apache.org/licenses/LICENSE-2.0.html"
+ *     )
+ * )
+ */
 class FileMangerFolderController extends ApiController
 {
     /**
-     * @SWG\Get(
+     * @OA\Get(
      *     path="/users",
-     *     summary="Get a list of users",
-     *     tags={"Users"},
-     *     @SWG\Response(response=200, description="Successful operation"),
-     *     @SWG\Response(response=400, description="Invalid request")
+     *     summary="دریافت لیست کاربران",
+     *     tags={"folders"},
+     *     @OA\Response(response=200, description="عملیات موفقیت‌آمیز"),
+     *     @OA\Response(response=400, description="درخواست نامعتبر")
      * )
      */
     public function index(): JsonResponse
@@ -35,11 +49,13 @@ class FileMangerFolderController extends ApiController
 
     public function store(SaveFolder $request): JsonResponse
     {
-        //todo for create folder
-        //replace space by - in slug
-        //replace farsi slug to finglish
-        FileManagerFolder::createFolder(name: $request->name, slug: $request->slug, parentId: $request->parent_id);
-        return $this->successMessage("فولدر با موفقیت ساخته شد");
+        try {
+            FileManagerFolder::createFolder(name: $request->name, slug: $request->slug, parentId: $request->parent_id);
+            return $this->successMessage("فولدر با موفقیت ساخته شد");
+        } catch (\Exception $e) {
+            return $this->errorMessage("فولدر ساخته نشد");
+
+        }
     }
 
     public function show($slug): JsonResponse
@@ -70,4 +86,6 @@ class FileMangerFolderController extends ApiController
         FileManagerFolder::findOrFail($request->id)->delete();
         return $this->successMessage("فولدر با موفقیت حذف گردید");
     }
+
+
 }

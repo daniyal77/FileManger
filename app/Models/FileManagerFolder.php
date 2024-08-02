@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class FileManagerFolder extends Model
 {
@@ -38,5 +39,45 @@ class FileManagerFolder extends Model
         }
 
         return $breadcrumb;
+    }
+
+
+
+    /**
+     * @param $value
+     * @return void
+     */
+    public function setSlugAttribute($value)
+    {
+        if(static::whereSlug($slug = Str::slug($value))->exists())
+        {
+            if(static::whereSlug($slug)->get('id')->first()->id !== $this->id){
+                $slug = $this->incrementSlug($slug);
+
+                if(static::whereSlug($slug)->exists()){
+                    return $this->setSlugAttribute($slug);
+                }
+            }
+        }
+
+        $this->attributes['slug'] = $slug;
+    }
+
+    /**
+     * Increment slug
+     *
+     * @param   string $slug
+     * @return  string
+     **/
+    public function incrementSlug($slug): string
+    {
+        // Get the slug of the created post earlier
+        $max = static::whereSlug($slug)->latest('id')->value('slug');
+        if (is_numeric($max[-1])) {
+            return preg_replace_callback('/(\d+)$/', function ($matches) {
+                return $matches[1] + 1;
+            }, $max);
+        }
+        return "{$slug}-2";
     }
 }

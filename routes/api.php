@@ -19,10 +19,13 @@ use Illuminate\Support\Facades\Route;
  */
 Route::prefix('/v1/folder')->group(function () {
     Route::get('/list', [FileMangerFolderController::class, 'index']);
+    Route::get('trash', [FileMangerFolderController::class, 'trash']);
     Route::get('/show/{slug}', [FileMangerFolderController::class, 'show']);
     Route::post('/create', [FileMangerFolderController::class, 'store']);
-    Route::put('/rename', [FileMangerFolderController::class, 'rename']);
-    Route::delete('/delete', [FileMangerFolderController::class, 'delete']);
+    Route::put('/update', [FileMangerFolderController::class, 'update']);
+    Route::delete('/delete/{folderId}', [FileMangerFolderController::class, 'delete']);
+    Route::delete('/force/{folderId}', [FileMangerFolderController::class, 'trash']);
+    Route::get('/restore/{folderId}', [FileMangerFolderController::class, 'restore']);
 });
 
 

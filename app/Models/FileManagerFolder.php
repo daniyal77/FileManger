@@ -6,12 +6,13 @@ use App\Models\traits\CreateFolderTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 class FileManagerFolder extends Model
 {
-    use CreateFolderTrait;
+    use CreateFolderTrait, SoftDeletes;
 
     protected $fillable = ['name', 'slug', 'parent_id'];
 
@@ -19,6 +20,7 @@ class FileManagerFolder extends Model
     {
         return $this->hasMany(FileManagerMedia::class, 'folder_id');
     }
+
     public function parent(): BelongsTo
     {
         return $this->belongsTo(FileManagerFolder::class, 'parent_id');
@@ -28,6 +30,7 @@ class FileManagerFolder extends Model
     {
         return $this->hasMany(FileManagerFolder::class, 'parent_id');
     }
+
     public function getBreadcrumb(): Collection
     {
         $breadcrumb = collect();
@@ -42,31 +45,29 @@ class FileManagerFolder extends Model
     }
 
 
-
     /**
      * @param $value
      * @return void
      */
     public function setSlugAttribute($value)
     {
-        if(static::whereSlug($slug = Str::slug($value))->exists())
-        {
-            if(static::whereSlug($slug)->get('id')->first()->id !== $this->id){
-                $slug = $this->incrementSlug($slug);
 
-                if(static::whereSlug($slug)->exists()){
-                    return $this->setSlugAttribute($slug);
-                }
+        $slug = Str::slug($value);
+        // Check if the slug already exists and if it belongs to another record
+        $existingSlug = static::whereSlug($slug)->first();
+        if ($existingSlug) {
+            // If the existing slug is not the same as the current record's slug, increment it
+            if ($existingSlug->id !== $this->id) {
+                $slug = $this->incrementSlug($slug);
             }
         }
-
         $this->attributes['slug'] = $slug;
     }
 
     /**
      * Increment slug
      *
-     * @param   string $slug
+     * @param string $slug
      * @return  string
      **/
     public function incrementSlug($slug): string
@@ -79,5 +80,28 @@ class FileManagerFolder extends Model
             }, $max);
         }
         return "{$slug}-2";
+    }
+
+
+    protected static function booted()
+    {
+        static::deleting(function ($folder) {
+            $folder->children()->each(function ($child) {
+                $child->delete();
+            });
+            $folder->media()->each(function ($media) {
+                $media->delete();
+            });
+        });
+
+        static::restoring(function ($folder) {
+            $folder->children()->withTrashed()->each(function ($child) {
+                $child->restore();
+            });
+            //todo refactor
+//            $folder->media()->withTrashed()->each(function ($media) {
+//                $media->restore();
+//            });
+        });
     }
 }

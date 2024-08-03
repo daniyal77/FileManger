@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\DaniyalException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 
 class ApiController extends Controller
 {
@@ -46,4 +49,20 @@ class ApiController extends Controller
     {
         return response()->json(['message' => "لطفا با پشتیبانی تماس بگیرید"], 500);
     }
+
+    public function respondExceptionError(\Exception $e, $LogChanelName = null): JsonResponse
+    {
+        if ($e instanceof DaniyalException)
+            return $this->errorMessage($e->getMessage());
+
+        elseif ($e instanceof ModelNotFoundException)
+            return $this->notFoundMessage();
+
+        if ($LogChanelName)
+            Log::channel($LogChanelName)->error($e->getMessage() . '::' . $e->getTraceAsString());
+        else
+            Log::error($e->getMessage() . '::' . $e->getTraceAsString());
+        return $this->errorServerMessage();
+    }
+
 }

@@ -51,7 +51,6 @@ class FileManagerFolder extends Model
      */
     public function setSlugAttribute($value)
     {
-
         $slug = Str::slug($value);
         // Check if the slug already exists and if it belongs to another record
         $existingSlug = static::whereSlug($slug)->first();
@@ -72,16 +71,16 @@ class FileManagerFolder extends Model
      **/
     public function incrementSlug($slug): string
     {
-        // Get the slug of the created post earlier
-        $max = static::whereSlug($slug)->latest('id')->value('slug');
-        if (is_numeric($max[-1])) {
-            return preg_replace_callback('/(\d+)$/', function ($matches) {
-                return $matches[1] + 1;
-            }, $max);
-        }
-        return "{$slug}-2";
-    }
+        $originalSlug = $slug;
+        $count = 1;
 
+        while (static::whereSlug($slug)->exists()) {
+            $slug = "{$originalSlug}-{$count}";
+            $count++;
+        }
+
+        return $slug;
+    }
 
     protected static function booted()
     {

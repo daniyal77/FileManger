@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\FileMangerFolderController;
+use App\Http\Controllers\MediaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,6 +27,11 @@ Route::prefix('/v1/folder')->group(function () {
     Route::delete('/delete/{folderId}', [FileMangerFolderController::class, 'delete']);
     Route::delete('/force/{folderId}', [FileMangerFolderController::class, 'trash']);
     Route::get('/restore/{folderId}', [FileMangerFolderController::class, 'restore']);
+});
+
+
+Route::prefix('/v1/media')->group(function () {
+    Route::post('/create', [MediaController::class, 'store']);
 });
 
 

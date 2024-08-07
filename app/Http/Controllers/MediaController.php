@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SaveMedia;
 use App\Models\FileManagerMedia;
 use App\Strategies\UploadMedia;
+use Illuminate\Http\JsonResponse;
 
 class MediaController extends ApiController
 {
-    public function store(SaveMedia $request)
+    public function store(SaveMedia $request): JsonResponse
     {
         if (!is_array($request->file('media')))
             return $this->errorMessage("لطفا به صورت ارایه بفرستید");
@@ -26,21 +27,36 @@ class MediaController extends ApiController
             $uploadMedia = new UploadMedia($mimeType);
             $uploadMedia->mediaStrategy->upload($file, $request->folder_id);
         }
+        return $this->successMessage("با موفقیت اپلود شد");
     }
 
-    public function update()
+    public function update(): JsonResponse
     {
         $media = FileManagerMedia::findorFail(request()->id);
-        $media->update([
-            'name' => request()->name
-        ]);
+        $media->update(['name' => request()->name]);
+        return $this->successMessage("با موفقیت بروز رسانی شد");
+
     }
 
-    public function showLength($media_id)
+    public function showLength($media_id): JsonResponse
     {
         $media = FileManagerMedia::findorFail($media_id);
-        return $this->respond([
-            'data' => $media
-        ]);
+        return $this->respond(['data' => $media]);
+    }
+
+    public function delete($media_id): JsonResponse
+    {
+        FileManagerMedia::findorFail($media_id)->delete();
+        return $this->successMessage(" با موفقیت حذف گردید");
+    }
+
+    public function forceDelete($media_id): JsonResponse
+    {
+        $record = FileManagerMedia::withTrashed()->findorFail($media_id);
+        if ($record) {
+            $record->deleteFolder();
+            $record->forceDelete();
+        }
+        return $this->successMessage(" با موفقیت حذف گردید");
     }
 }

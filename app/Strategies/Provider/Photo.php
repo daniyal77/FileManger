@@ -33,7 +33,7 @@ class Photo implements MediaStrategy
                 foreach (config('filemanager.image.thumbnail_size') as $key => $thumb) {
                     $image = ImageManager::gd()->read($storedFilePath);
                     $size = explode('*', $thumb);
-                    $image->scale($size[0], $size[1]);
+                    $image->resize($size[0], $size[1]);
                     $thumbnailExtension = $this->getExtensionFromMimeType($file->getMimeType());
                     $thumbnailPath = 'uploads/' . $lastRecord->id . '/' . $key . "-" . $lastRecord->id . '.' . $thumbnailExtension;
                     $image->save(storage_path('app/public/' . $thumbnailPath));

@@ -32,6 +32,8 @@ Route::prefix('/v1/folder')->group(function () {
 
 Route::prefix('/v1/media')->group(function () {
     Route::post('/create', [MediaController::class, 'store']);
+    Route::put('/update', [MediaController::class, 'update']);
+    Route::get('/show/length/{media_id}', [MediaController::class, 'showLength']);
 });
 
 

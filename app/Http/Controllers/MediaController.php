@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SaveMedia;
+use App\Models\FileManagerMedia;
 use App\Strategies\UploadMedia;
 
-class MediaController extends Controller
+class MediaController extends ApiController
 {
     public function store(SaveMedia $request)
     {
@@ -22,5 +23,21 @@ class MediaController extends Controller
 
         $uploadMedia = new UploadMedia($mimeType);
         $uploadMedia->mediaStrategy->upload($request);
+    }
+
+    public function update()
+    {
+        $media = FileManagerMedia::findorFail(request()->id);
+        $media->update([
+            'name' => request()->name
+        ]);
+    }
+
+    public function showLength($media_id)
+    {
+        $media = FileManagerMedia::findorFail($media_id);
+        return $this->respond([
+            'data' => $media
+        ]);
     }
 }

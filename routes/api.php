@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DiskSpaceController;
 use App\Http\Controllers\FileMangerFolderController;
 use App\Http\Controllers\MediaController;
 use Illuminate\Support\Facades\Route;
@@ -37,3 +38,4 @@ Route::prefix('/v1/media')->group(function () {
 });
 
 
+Route::get('/v1/disk-space', [DiskSpaceController::class, 'index']);

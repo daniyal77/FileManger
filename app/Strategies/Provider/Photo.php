@@ -9,17 +9,17 @@ use Intervention\Image\ImageManager;
 class Photo implements MediaStrategy
 {
 
-    public function upload($request): string
+    public function upload($file, $folder_id): string
     {
+        /*
         $rules['media'] = 'mimes:' . implode(',', config('filemanager.image.valid_mime')) . '|max:' . config('filemanager.image.max_size');
         $request->validate($rules);
-        $file = $request->file('media');
+     */
         $post = [
-            'folder_id' => 2,
+            'folder_id' => $folder_id,
             'name'      => $file->getClientOriginalName(),
             'mime_type' => $file->getMimeType(),
             'size'      => $file->getSize(),
-            'slug'      => 1,
         ];
         $lastRecord = FileManagerMedia::create($post);
         if ($file) {

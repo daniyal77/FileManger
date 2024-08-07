@@ -22,7 +22,7 @@ class SaveMedia extends FormRequest
     public function rules(): array
     {
         return [
-            'media' => 'required|file'
+            'media' => 'required'
         ];
     }
 }

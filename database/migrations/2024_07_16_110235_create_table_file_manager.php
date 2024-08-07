@@ -27,7 +27,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('mime_type');
             $table->bigInteger('size')->unsigned()->default(0);
-            $table->string('slug');
             $table->softDeletes();
             $table->timestamps();
         });

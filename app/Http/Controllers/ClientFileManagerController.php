@@ -9,8 +9,11 @@ class ClientFileManagerController extends Controller
 {
     public function show($mediaId, $fileName): BinaryFileResponse
     {
-        //todo check file is exsits
-        $media=FileManagerMedia::findOrFail($mediaId);
-        return response()->file($media->getMediaUrl());
+        $media = FileManagerMedia::findOrFail($mediaId);
+        $path = $media->getMediaUrl();
+        if (!file_exists($path)) {
+            abort(404);
+        }
+        return response()->file($path);
     }
 }

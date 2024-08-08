@@ -40,6 +40,7 @@ Route::prefix('/v1/media')->group(function () {
     Route::get('/filter/{media_id}', [MediaController::class, 'filter']);
 
     Route::get('/restore/{media_id}', [MediaController::class, 'restore']);
+    Route::get('/trash', [MediaController::class, 'trash']);
 });
 
 

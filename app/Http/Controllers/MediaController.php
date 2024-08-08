@@ -61,10 +61,23 @@ class MediaController extends ApiController
         return $this->successMessage(" با موفقیت حذف گردید");
     }
 
-    public function filter($filter)
+    public function filter($filter): JsonResponse
     {
         $filter = "image/" . $filter;
         $media = FileManagerMedia::where('mime_type', $filter)->get();
+        return $this->respond([
+            'data' => ShowInformationMedia::make($media)
+        ]);
+    }
+
+    public function restore($media_id)
+    {
+        FileManagerMedia::withTrashed()->findorFail($media_id)->get();
+        return $this->successMessage(" با موفقیت تغییر وضعیت داده شد");
+    }
+    public function trash()
+    {
+        $media = FileManagerMedia::onlyTrashed()->get();
         return $this->respond([
             'data' => ShowInformationMedia::make($media)
         ]);

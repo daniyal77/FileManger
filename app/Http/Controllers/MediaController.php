@@ -70,12 +70,12 @@ class MediaController extends ApiController
         ]);
     }
 
-    public function restore($media_id)
+    public function restore($media_id): JsonResponse
     {
         FileManagerMedia::withTrashed()->findorFail($media_id)->get();
         return $this->successMessage(" با موفقیت تغییر وضعیت داده شد");
     }
-    public function trash()
+    public function trash(): JsonResponse
     {
         $media = FileManagerMedia::onlyTrashed()->get();
         return $this->respond([

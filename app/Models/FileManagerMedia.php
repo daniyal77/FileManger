@@ -30,4 +30,19 @@ class FileManagerMedia extends Model
         }
     }
 
+    public function getMediaUrl()
+    {
+        return 'storage/uploads/' . $this->folder_id . "/" . $this->id . "." . $this->getExtensionFromMimeType($this->mime_type) ;
+    }
+
+    public function getExtensionFromMimeType($mimeType): string
+    {
+        $mimeMap = [
+            'image/jpeg' => 'jpg',
+            'image/png'  => 'png',
+            'image/gif'  => 'gif',
+        ];
+
+        return $mimeMap[$mimeType] ?? 'jpg';
+    }
 }

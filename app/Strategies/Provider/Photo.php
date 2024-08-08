@@ -24,7 +24,7 @@ class Photo implements MediaStrategy
         $lastRecord = FileManagerMedia::create($post);
         if ($file) {
             // گرفتن پسوند از mime type
-            $extension = $this->getExtensionFromMimeType($file->getMimeType());
+            $extension = $lastRecord->getExtensionFromMimeType($file->getMimeType());
             // تنظیم نام جدید فایل به نام پوشه
             $newFileName = $lastRecord->id . '.' . $extension;
             $path = $file->storeAs('uploads/' . $lastRecord->id, $newFileName, 'public');
@@ -34,7 +34,7 @@ class Photo implements MediaStrategy
                     $image = ImageManager::gd()->read($storedFilePath);
                     $size = explode('*', $thumb);
                     $image->resize($size[0], $size[1]);
-                    $thumbnailExtension = $this->getExtensionFromMimeType($file->getMimeType());
+                    $thumbnailExtension = $lastRecord->getExtensionFromMimeType($file->getMimeType());
                     $thumbnailPath = 'uploads/' . $lastRecord->id . '/' . $key . "-" . $lastRecord->id . '.' . $thumbnailExtension;
                     $image->save(storage_path('app/public/' . $thumbnailPath));
                 }
@@ -42,17 +42,6 @@ class Photo implements MediaStrategy
             return "File uploaded";
         }
         return "File upload failed";
-    }
-
-    private function getExtensionFromMimeType($mimeType): string
-    {
-        $mimeMap = [
-            'image/jpeg' => 'jpg',
-            'image/png'  => 'png',
-            'image/gif'  => 'gif',
-        ];
-
-        return $mimeMap[$mimeType] ?? 'jpg';
     }
 
     private function uploaded()

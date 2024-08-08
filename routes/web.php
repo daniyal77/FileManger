@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\FileMangerFolderController;
+use App\Http\Controllers\ClientFileManagerController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,4 +16,5 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);
+Route::get('show/image/{id}/{file_name}', [ClientFileManagerController::class, 'show']);
 

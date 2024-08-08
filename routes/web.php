@@ -17,4 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);
 Route::get('show/image/{id}/{file_name}', [ClientFileManagerController::class, 'show']);
+Route::get('private/image/{id}/{file_name}', [ClientFileManagerController::class, 'private'])
+    ->name('optimizeImageSigned')->middleware('signed');
+
 

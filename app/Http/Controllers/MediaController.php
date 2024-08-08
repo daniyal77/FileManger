@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SaveMedia;
+use App\Http\Resources\ShowInformationMedia;
 use App\Models\FileManagerMedia;
 use App\Strategies\UploadMedia;
 use Illuminate\Http\JsonResponse;
@@ -25,7 +26,7 @@ class MediaController extends ApiController
             // Re-validate the file with specific rules
 
             $uploadMedia = new UploadMedia($mimeType);
-            $uploadMedia->mediaStrategy->upload($file, $request->folder_id);
+            $uploadMedia->mediaStrategy->upload($file, $request->folder_id, request()->input('type', 'public'));
         }
         return $this->successMessage("با موفقیت اپلود شد");
     }
@@ -58,5 +59,14 @@ class MediaController extends ApiController
             $record->forceDelete();
         }
         return $this->successMessage(" با موفقیت حذف گردید");
+    }
+
+    public function filter($filter)
+    {
+        $filter = "image/" . $filter;
+        $media = FileManagerMedia::where('mime_type', $filter)->get();
+        return $this->respond([
+            'data' => ShowInformationMedia::make($media)
+        ]);
     }
 }

@@ -9,7 +9,7 @@ use Intervention\Image\ImageManager;
 class Photo implements MediaStrategy
 {
 
-    public function upload($file, $folder_id): string
+    public function upload($file, $folder_id,$type): string
     {
         /*
         $rules['media'] = 'mimes:' . implode(',', config('filemanager.image.valid_mime')) . '|max:' . config('filemanager.image.max_size');
@@ -53,5 +53,10 @@ class Photo implements MediaStrategy
         ];
 
         return $mimeMap[$mimeType] ?? 'jpg';
+    }
+
+    private function uploaded()
+    {
+
     }
 }

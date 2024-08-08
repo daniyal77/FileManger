@@ -37,6 +37,8 @@ Route::prefix('/v1/media')->group(function () {
     Route::get('/show/length/{media_id}', [MediaController::class, 'showLength']);
     Route::delete('/delete/{media_id}', [MediaController::class, 'delete']);
     Route::delete('/force-delete/{media_id}', [MediaController::class, 'forceDelete']);
+    Route::get('/filter/{media_id}', [MediaController::class, 'filter']);
+
     Route::get('/restore/{media_id}', [MediaController::class, 'restore']);
 });
 
